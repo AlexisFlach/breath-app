@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apiservice
+  template:
+    metadata:
+      labels:
+        app: apiservice
+    spec:
+      containers:
+        - name: apiservice
+          image: flachens/breath-api:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-clusterip-srv
+spec: 
+  type: ClusterIP
+  selector:
+    app: apiservice
+  ports:
+  - name: apiservice
+    protocol: TCP
+    port: 80
+    targetPort: 80
